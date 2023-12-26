@@ -1,0 +1,43 @@
+import cv2
+import requests
+from twilio.rest import Client
+
+# Initialize the Twilio client
+TWILIO_ACCOUNT_SID = 'your_account_sid'
+TWILIO_AUTH_TOKEN = 'your_auth_token'
+TWILIO_PHONE_NUMBER = 'your_twilio_phone_number'
+TO_PHONE_NUMBER = 'destination_phone_number'
+
+client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+
+# Function to process the video and detect accidents
+def detect_accidents(video_path):
+    cap = cv2.VideoCapture(video_path)
+    frame_number = 0
+
+    while True:
+        ret, frame = cap.read()
+
+        if not ret:
+            break
+
+        # Perform accident detection (simplified, replace with real algorithm)
+        is_accident = False  # Placeholder for accident detection
+
+        if is_accident:
+            # Send SMS alert using Twilio
+            message = client.messages.create(
+                body="Accident detected at frame {} of the video. Please respond.".format(frame_number),
+                from_=TWILIO_PHONE_NUMBER,
+                to=TO_PHONE_NUMBER
+            )
+
+        frame_number += 1
+
+    cap.release()
+
+# Specify the path to the uploaded video file
+video_file_path = 'path_to_uploaded_video.mp4'
+
+# Call the detect_accidents function with the video file
+detect_accidents(video_file_path)
